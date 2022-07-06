@@ -24,7 +24,7 @@ class Category(models.Model):
 
 
 class Answer(models.Model):
-    title = models.CharField(max_length=255, unique=True)
+    title = models.CharField(max_length=255)
 
     class Meta:
         ordering = ["-id"]
@@ -36,7 +36,8 @@ class Answer(models.Model):
 class Quiz(models.Model):
     created_at = models.DateTimeField(default=datetime.today)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    quiz_title = models.CharField(max_length=255, unique=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    quiz_title = models.CharField(max_length=255)
     options = models.ManyToManyField(Answer, blank=True, related_name="options")
     correct_answer = models.ManyToManyField(Answer, blank=True, related_name="correct_answer")
     total_marks = models.IntegerField(default=0, null=True, blank=True)

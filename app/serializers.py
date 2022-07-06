@@ -41,3 +41,20 @@ class QuizTypeSerializer(serializers.ModelSerializer):
         fields = [
             "type_name"
         ]
+
+
+class QuizSerializer(serializers.ModelSerializer):
+    cat_name = serializers.CharField(source="category.category_name")
+    options = serializers.StringRelatedField(many=True)
+    correct_answer = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Quiz
+        fields = [
+            "user",
+            "cat_name",
+            "quiz_title",
+            "options",
+            "correct_answer",
+            "total_marks"
+        ]

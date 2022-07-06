@@ -29,14 +29,12 @@ class UserRegisterView(APIView):
 class QuizTypePostView(APIView):
     permission_classes = (IsAuthenticated, )
 
-    @staticmethod
-    def get(request):
+    def get(self, request):
         query = QuizType.objects.all()
         serializer = QuizTypeSerializer(query, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @staticmethod
-    def post(request):
+    def post(self, request):
         serializer = QuizTypeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -46,8 +44,7 @@ class QuizTypePostView(APIView):
 class QuizTypeEditView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    @staticmethod
-    def put(request, type_id):
+    def put(self, request, type_id):
         quiz_obj = get_object_or_404(QuizType, id=type_id)
         quiz_obj.type_name = request.data["type_name"]
         quiz_obj.save()
@@ -59,11 +56,42 @@ class QuizTypeEditView(APIView):
 class QuizTypeDelete(APIView):
     permission_classes = (IsAuthenticated, )
 
-    @staticmethod
-    def delete(request, type_id):
+    def delete(self, request, type_id):
         quiz_obj = get_object_or_404(QuizType, id=type_id)
         quiz_obj.delete()
         serializer = QuizTypeSerializer(quiz_obj)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
 
+class QuizGet(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        query = Quiz.objects.all()
+        serializer = QuizSerializer(query, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class QuizPost(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        user = request.user
+        quiz = Quiz(
+            user=user,
+            category=Category.objects.get(id=request.data["category"]),
+            quiz_title=request.data["quiz_title"],
+        )
+
+        quiz.save()
+
+        for o in request.data["options"]:
+            answer = Answer.objects.create(title=o["title"])
+            quiz.options.add(answer)
+
+        for c in request.data["correct_answer"]:
+            obj = Answer.objects.get(title=c["title"])
+            quiz.correct_answer.add(obj)
+
+        serializer = QuizSerializer(quiz)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
