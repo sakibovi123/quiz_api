@@ -25,3 +25,9 @@ class UserRegisterView(APIView):
             return Response(status.HTTP_400_BAD_REQUEST)
 
 
+# class HelloView(APIView):
+#     permission_classes = (IsAuthenticated,)
+#
+#     def get(self, request):
+#         content = {'message': 'Hello, World!'}
+#         return Response(content)
