@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .models import QuizType, Category, Quiz, Answer, Submit
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -32,3 +33,11 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({
                 "error": "User Already Exists"
             })
+
+
+class QuizTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuizType
+        fields = [
+            "type_name"
+        ]

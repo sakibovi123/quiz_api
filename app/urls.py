@@ -10,4 +10,8 @@ urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='LoginView'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("register/", UserRegisterView.as_view()),
+
+    path("quiz-types/", QuizTypePostView.as_view()),
+    path("edit-type/<int:type_id>/", QuizTypeEditView.as_view()),
+    path("delete-type/<int:type_id>/", QuizTypeDelete.as_view()),
 ]
