@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import QuizType, Category, Quiz, Answer, Submit
+from .models import Type, Category, Quiz, Answer, Submit
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,7 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class QuizTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = QuizType
+        model = Type
         fields = [
             "type_name"
         ]
@@ -54,7 +54,14 @@ class QuizSerializer(serializers.ModelSerializer):
             "user",
             "cat_name",
             "quiz_title",
+            "type",
             "options",
             "correct_answer",
-            "total_marks"
+
         ]
+
+
+class SubmitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Submit
+        fields = "__all__"

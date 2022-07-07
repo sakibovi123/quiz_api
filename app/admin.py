@@ -4,7 +4,7 @@ from .models import *
 
 admin.site.register([
     Quiz,
-    QuizType,
+    Type,
     Category,
     Answer,
     Submit

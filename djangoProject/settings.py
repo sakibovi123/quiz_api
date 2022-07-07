@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    "django_filters"
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,12 @@ REST_FRAMEWORK = {
     )
 
 }
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_FILTER_BACKEND': [
+#         'django_filters.rest_framework.DjangoFilterBackend'
+#     ]
+# }
 
 ROOT_URLCONF = 'djangoProject.urls'
 

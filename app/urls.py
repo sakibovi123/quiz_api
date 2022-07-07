@@ -28,4 +28,5 @@ urlpatterns = [
     path("create-quiz/", QuizPost.as_view()),
 
     # Submit
+    path("submits/", GetSubmission.as_view()),
 ]

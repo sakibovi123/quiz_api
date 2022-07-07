@@ -7,6 +7,8 @@ from .models import *
 from django.contrib.auth.models import User
 from .serializers import *
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.generics import ListAPIView
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class UserRegisterView(APIView):
@@ -30,7 +32,7 @@ class QuizTypePostView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request):
-        query = QuizType.objects.all()
+        query = Type.objects.all()
         serializer = QuizTypeSerializer(query, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -45,7 +47,7 @@ class QuizTypeEditView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def put(self, request, type_id):
-        quiz_obj = get_object_or_404(QuizType, id=type_id)
+        quiz_obj = get_object_or_404(Type, id=type_id)
         quiz_obj.type_name = request.data["type_name"]
         quiz_obj.save()
         serializer = QuizTypeSerializer(quiz_obj)
@@ -57,7 +59,7 @@ class QuizTypeDelete(APIView):
     permission_classes = (IsAuthenticated, )
 
     def delete(self, request, type_id):
-        quiz_obj = get_object_or_404(QuizType, id=type_id)
+        quiz_obj = get_object_or_404(Type, id=type_id)
         quiz_obj.delete()
         serializer = QuizTypeSerializer(quiz_obj)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
@@ -95,3 +97,24 @@ class QuizPost(APIView):
 
         serializer = QuizSerializer(quiz)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class QuizFiltering(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["category"]
+
+
+class GetSubmission(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    queryset = Submit.objects.all()
+    serializer_class = SubmitSerializer
+
+
+class PostSubmission(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        pass

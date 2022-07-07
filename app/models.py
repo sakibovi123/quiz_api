@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 
 
-class QuizType(models.Model):
+class Type(models.Model):
     type_name = models.CharField(max_length=255)
 
     class Meta:
@@ -37,10 +37,11 @@ class Quiz(models.Model):
     created_at = models.DateTimeField(default=datetime.today)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, null=True, blank=True)
     quiz_title = models.CharField(max_length=255)
     options = models.ManyToManyField(Answer, blank=True, related_name="options")
     correct_answer = models.ManyToManyField(Answer, blank=True, related_name="correct_answer")
-    total_marks = models.IntegerField(default=0, null=True, blank=True)
+    is_correct = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["-created_at"]
